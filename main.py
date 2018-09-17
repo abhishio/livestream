@@ -9,7 +9,8 @@ from flask import Flask, request, Response, render_template, redirect
 MAIN_APP = Flask(__name__)
 MAIN_APP.debug = True
 
-YOUTUBE_RTMP = "rtmp://a.rtmp.youtube.com/live2"
+#YOUTUBE_RTMP = "rtmp://a.rtmp.youtube.com/live2"
+RTMP_LIST = ["rtmp://a.rtmp.youtube.com/live2", "rtmp://live-api-s.facebook.com:80/rtmp"]
 MEDIA_HOME = "/opt/media/files/otts/files"
 
 def check_auth(username, password):
@@ -37,6 +38,8 @@ def requires_auth(req_auth):
 
 def stream_start():
     '''Function to Start Streaming '''
+    print request.form
+    yt_rtmp = request.form['yt_rtmp']
     yt_streamkey = request.form['yt_streamkey']
     select_playlist = request.form['select_playlist']
     def randstr(size=10, chars=ascii_lowercase + digits):
@@ -45,7 +48,9 @@ def stream_start():
 
     logstr = randstr()
     try:
-        Popen(['bash', '-x', './stream.sh', MEDIA_HOME, select_playlist, yt_streamkey, 'logs/' + logstr+ ".log"], close_fds=True, stdout=PIPE, stderr=STDOUT)
+        cmd = "bash -x ./stream.sh " + " " + MEDIA_HOME + " " + yt_rtmp + " " + select_playlist + " " + yt_streamkey + " " + " logs/" + logstr+ ".log"
+        print "Stream Cmd: " + cmd
+        Popen(['bash', '-x', './stream.sh', MEDIA_HOME, yt_rtmp, select_playlist, yt_streamkey, 'logs/' + logstr+ ".log"], close_fds=True, stdout=PIPE, stderr=STDOUT)
         return "Stream Started"
     except  CalledProcessError as ffmpeg_error:
         return ffmpeg_error
@@ -74,8 +79,8 @@ def get_streaming_video():
     return video_stream_list
 
 
-def kill_process(pid):
-    '''Function to kill the Process Playlist/Stream'''
+def stop_process(pid):
+    '''Function to stop the Process Playlist/Stream'''
     cmd = "sudo kill -9 " + str(pid)
     ps_out = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     return ps_out.communicate()[0].splitlines()
@@ -84,19 +89,19 @@ def kill_process(pid):
 @MAIN_APP.route('/stream/status')
 @requires_auth
 def stream_status():
-    '''Get Stream Status and Kill Action'''
+    '''Get Stream Status and stop Action'''
     stream_list = get_streaming_playlist()
     video_list = get_streaming_video()
     return render_template("stream_status.html", stream_list=stream_list, video_list=video_list)
 
 
-@MAIN_APP.route('/stream/kill', methods=['POST'])
+@MAIN_APP.route('/stream/stop', methods=['POST'])
 @requires_auth
-def api_kill_playlist():
-    '''Api to kill the Process Playlist/Stream'''
+def api_stop_playlist():
+    '''Api to stop the Process Playlist/Stream'''
     if request.method == 'POST':
         pid = request.form['pid']
-        kill_process(pid)
+        stop_process(pid)
         return redirect("/stream/status", code=200)
 
 
@@ -124,7 +129,7 @@ def home_page():
                 playlist_valid.append(list_x)
     except  CalledProcessError as playlist_error:
         print playlist_error
-    return render_template("index.html", playlist_all=playlist_valid, youtube_rtmp=YOUTUBE_RTMP)
+    return render_template("index.html", playlist_all=playlist_valid, rtmp_list=RTMP_LIST)
 
 
 if __name__ == '__main__':

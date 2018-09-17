@@ -2,7 +2,7 @@
 <head>
 <title> Stream Response </title>
 <style>
-.startstreambtn {
+.defaultbtn {
         background-color: #4CAF50;
         color: white;
         padding: 16px 20px;
@@ -13,7 +13,7 @@
         opacity: 0.9;
     }
     
-    .startstreambtn:hover {
+    .defaultbtn:hover {
         opacity: 1;
     }
     table, th, td {
@@ -25,13 +25,14 @@
  
 <body>
     <form action = "/stream/status">
-        <button type = "submit" class = "startstreambtn">Refresh</button>
+        <button type = "submit" class = "defaultbtn">Refresh</button>
     </form>
 
     <h3> Active Rooms </h3>
     <table style = "width:100%">
             <tr>
               <th>ProcessID</th>
+              <th>RTMP URL</th>
               <th>Playlist</th> 
               <th>StreamKey</th>
               <th>Log</th>
@@ -39,12 +40,12 @@
             </tr>
             {% for item in stream_list %}
             <tr>
-                <form action = "/stream/kill" method = "POST" >
-                    <th> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </th>
-                    {% for id in item[1:4] %}
-                        <th> {{ id }} </th>
+                <form action = "/stream/stop" method = "POST" >
+                    <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
+                    {% for id in item[1:5] %}
+                        <td> {{ id }} </td>
                     {% endfor %}
-                <th> <button class = "killbtn"> kill </button> </th>
+                <td> <button class = "stopbtn"> stop </button> </td>
                 </form>
             </tr>
             {% endfor %}
@@ -53,25 +54,25 @@
     <table style = "width:100%">
             <tr>
               <th>ProcessID</th>
-              <th>Playlist/Video</th> 
+              <th>Playlist/Video</th>
               <th>RTMP Address</th>
               <th>Action</th>
             </tr>
             {% for item in video_list %}
             <tr>
-                <form action = "/stream/kill" method = "POST">
-                    <th> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </th>
+                <form action = "/stream/stop" method = "POST">
+                    <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
                     {% for id in item[1:3] %}
-                        <th> {{ id }} </th>
+                        <td> {{ id }} </td>
                     {% endfor %}
-                    <th> <button type = "submit"  > kill </button> </th>
+                    <td> <button type = "submit"  > stop </button> </td>
                 </form>
             </tr>
             {% endfor %}
     </table>
     <h3> </h3>
     <form action = "/">
-        <button type = "submit" class = "startstreambtn">Return to Home</button>
+        <button type = "submit" class = "defaultbtn">Return to Home</button>
     </form>
 </body>
 </html>

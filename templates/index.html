@@ -77,19 +77,28 @@
          
         <hr>
     
-        <label for="yt_rtmp"><b>Youtube RTMP</b></label>
-       
-        <input type="text" value="rtmp://a.rtmp.youtube.com/live2" name="yt_rtmp" readonly>
-    
-        <label for="yt_streamkey"><b>Youtube StreamKey</b></label>
-        <input type="text" placeholder="Enter StreamKey" name="yt_streamkey" required>
-    
-        <label for="playlist"><b>Select Uploaded Playlist ** </b></label>
-        <Select name = "select_playlist">
-            {% for key in playlist_all %}
-              <option value = "{{ key }}" selected> {{  key }} </option>
-            {% endfor %}  
-        </Select>
+        <div>
+        <label for="yt_rtmp"><b>RTMP URL</b></label>
+            <!-- <input type="text" placeholder="rtmp://a.rtmp.youtube.com/live2 | rtmp://live-api-s.facebook.com:80/rtmp/" name="yt_rtmp" > -->
+            <Select name = "yt_rtmp">
+                {% for key in rtmp_list %}
+                <option value = "{{ key }}" selected> {{  key }} </option>
+                {% endfor %}  
+            </Select>
+        </div>
+        <h3></h3>
+        <div>
+            <label for="yt_streamkey"><b>Youtube StreamKey</b></label>
+            <input type="text" placeholder="Enter StreamKey" name="yt_streamkey" required>
+        </div>    
+        <div>
+            <label for="playlist"><b>Select Uploaded Playlist ** </b></label>
+            <Select name = "select_playlist">
+                {% for key in playlist_all %}
+                <option value = "{{ key }}" selected> {{  key }} </option>
+                {% endfor %}  
+            </Select>
+        </div>
         <p> ** Only Playlist with videos are available in the list</p>
         <hr>
          
