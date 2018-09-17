@@ -41,7 +41,7 @@
             <tr>
                 <form action = "/stream/kill" method = "POST" >
                     <th> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </th>
-                    {% for id in item[1:3] %}
+                    {% for id in item[1:4] %}
                         <th> {{ id }} </th>
                     {% endfor %}
                 <th> <button class = "killbtn"> kill </button> </th>
