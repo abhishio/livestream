@@ -4,8 +4,6 @@ logs/**
 # App configuration file
 .streamkey_*.csv
 
-rtmp.list
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

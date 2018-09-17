@@ -51,18 +51,21 @@ def stream_start():
     print(YT_STREAMKEY, SELECT_PLAYLIST)
     def randstr(size=10, chars=ascii_lowercase + digits):
         return ''.join(choice(chars) for _ in range(size))
-
+        
     logstr = randstr()
     try:
         ffmpeg_process = subprocess.Popen(['bash', '-x', './stream.sh', MEDIA_HOME,         SELECT_PLAYLIST, YT_STREAMKEY,  'logs/' + logstr+ ".log"], stdout=subprocess.PIPE )
-        msg  =  "Stream " + SELECT_PLAYLIST + "Started. Check Status"
+        msg  =  ffmpeg_process.communicate()[0].splitlines()
+        print "Test1"
         return msg
     except subprocess.CalledProcessError as ffmpeg_error:
+        print "Test2"
         return ffmpeg_error
 
         
         
 def get_streaming_playlist():
+    '''Get streaming Playlist running on the server'''
     cmd = "ps -e -o pid,command | grep -i stream.sh | grep -v grep"
     ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     output = [ w.replace('bash -x ./stream.sh /opt/media/files/otts/files', ' ') for w in  ps.communicate()[0].splitlines() ]
@@ -72,6 +75,7 @@ def get_streaming_playlist():
     return stream_list
 
 def get_streaming_video():
+    '''Get streaming videos running on the server'''
     cmd = "ps -e -o pid,command | grep -i ffmpeg | grep -v grep"
     ps = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     output = [ w.replace('ffmpeg -re -i /opt/media/files/otts/files/', ' ') for w in  ps.communicate()[0].splitlines()]
@@ -83,6 +87,7 @@ def get_streaming_video():
 
 
 def kill_process(pid):
+    '''Function to kill the Process Playlist/Stream'''
     cmd = "sudo kill -9 " + str(pid)
     ps = subprocess.Popen(cmd,shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     msg = ps.communicate()[0]
@@ -92,31 +97,30 @@ def kill_process(pid):
 @app.route('/stream/status')
 @requires_auth
 def stream_status():
+    '''Get Stream Status and Kill Action'''
     stream_list = get_streaming_playlist()
     video_list = get_streaming_video()
-    return render_template("stream_status.html", stream_list = stream_list, video_list = video_list )
+    return render_template("stream_status.html", stream_list=stream_list, video_list=video_list)
 
 
 @app.route('/stream/kill', methods = ['POST'])
 @requires_auth
 def api_kill_playlist():
-    '''Function to Start Streaming '''
+    '''Api to kill the Process Playlist/Stream'''
     if request.method == 'POST':
         pid = request.form['pid']
-        print(pid)
         kill_process(pid)
-        redirect_status = redirect("/stream/status", code=200)
-        return "test"
+        return redirect("/stream/status", code=200)
 
 
 @app.route('/stream/start', methods = ['POST'])
 @requires_auth
 def api_stream_start():
+    '''Api to Start the Stream'''
     if request.method == 'POST':
-        stream_msg = stream_start()
-        print('#flash(stream_msg)')
-        redirect_status = redirect("/stream/status", code=200)
-        return stream_msg
+        msg = stream_start()
+        print(msg)
+    return redirect("/stream/status", code=200)
 
 
 @app.route('/')
