@@ -102,7 +102,7 @@ def api_stop_playlist():
     if request.method == 'POST':
         pid = request.form['pid']
         stop_process(pid)
-        return redirect("/stream/status", code=200)
+        return redirect("/stream/status", code=302)
 
 
 @MAIN_APP.route('/stream/start', methods=['POST'])
@@ -111,7 +111,7 @@ def api_stream_start():
     '''Api to Start the Stream'''
     if request.method == 'POST':
         stream_start()
-    return redirect("/stream/status", code=200)
+    return redirect("/stream/status", code=302)
 
 
 @MAIN_APP.route('/stream')
