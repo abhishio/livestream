@@ -4,6 +4,9 @@ logs/**
 # App configuration file
 .streamkey_*.csv
 
+# Bootstrap files
+templates/bs_*.thml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

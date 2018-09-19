@@ -1,7 +1,17 @@
 <!doctype html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  
+    
 <title> Stream Response </title>
 <style>
+.row {
+    padding: 16px
+}
 .defaultbtn {
         background-color: #4CAF50;
         color: white;
@@ -24,55 +34,73 @@
 </head>
  
 <body>
-    <form action = "/stream/status">
-        <button type = "submit" class = "defaultbtn">Refresh</button>
-    </form>
 
-    <h3> Active Rooms </h3>
-    <table style = "width:100%">
-            <tr>
-              <th>ProcessID</th>
-              <th>RTMP URL</th>
-              <th>Playlist</th> 
-              <th>StreamKey</th>
-              <th>Log</th>
-              <th>Action</th>
-            </tr>
-            {% for item in stream_list %}
-            <tr>
-                <form action = "/stream/stop" method = "POST" >
-                    <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
-                    {% for id in item[1:5] %}
-                        <td> {{ id }} </td>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                <a class="nav-link" href="/stream">Create Stream</a>
+                </li>
+                <li class="nav-item active">
+                <a class="nav-link" href="/upload">Upload Videos</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/stream/status">Refresh</a>
+                </li>
+                
+            </ul>
+    </nav>
+    <div class="container" >
+        <div class="row">
+            <h3> Active Playlist </h3>
+            <table style = "width:100%">
+                    <tr>
+                        <th>ProcessID</th>
+                        <th>RTMP URL</th>
+                        <th>Playlist</th> 
+                        <th>StreamKey</th>
+                        <th>Log</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for item in stream_list %}
+                    <tr>
+                        <form action = "/stream/stop" method = "POST" >
+                            <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
+                            {% for id in item[1:5] %}
+                                <td> {{ id }} </td>
+                            {% endfor %}
+                        <td> <button type="submit" class="btn btn-danger"> stop </button> </td>
+                        </form>
+                    </tr>
                     {% endfor %}
-                <td> <button class = "stopbtn"> stop </button> </td>
-                </form>
-            </tr>
-            {% endfor %}
-    </table>
-    <h3> Active Videos </h3>
-    <table style = "width:100%">
-            <tr>
-              <th>ProcessID</th>
-              <th>Playlist/Video</th>
-              <th>RTMP Address</th>
-              <th>Action</th>
-            </tr>
-            {% for item in video_list %}
-            <tr>
-                <form action = "/stream/stop" method = "POST">
-                    <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
-                    {% for id in item[1:3] %}
-                        <td> {{ id }} </td>
+            </table>
+        </div>
+        <div class="row">
+            <h3> Active Videos </h3>
+            <table style = "width:100%">
+                    <tr>
+                        <th>ProcessID</th>
+                        <th>Playlist/Video</th>
+                        <th>RTMP Address</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for item in video_list %}
+                    <tr>
+                        <form action = "/stream/stop" method = "POST">
+                            <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
+                            {% for id in item[1:3] %}
+                                <td> {{ id }} </td>
+                            {% endfor %}
+                            <td> <button type = "submit" class="btn btn-danger" > stop </button> </td>
+                        </form>
+                    </tr>
                     {% endfor %}
-                    <td> <button type = "submit"  > stop </button> </td>
-                </form>
-            </tr>
-            {% endfor %}
-    </table>
-    <h3> </h3>
-    <form action = "/">
-        <button type = "submit" class = "defaultbtn">Return to Home</button>
-    </form>
+            </table>
+        </div>
+    </div> 
 </body>
 </html>

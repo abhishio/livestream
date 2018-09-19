@@ -114,10 +114,10 @@ def api_stream_start():
     return redirect("/stream/status", code=200)
 
 
-@MAIN_APP.route('/')
+@MAIN_APP.route('/stream')
 @requires_auth
-def home_page():
-    '''Home Page'''
+def stream_page():
+    '''Stream Page'''
     try:
         playlist_all = check_output(['find', MEDIA_HOME, '-mindepth', '1', '-maxdepth', '1', '-type', 'd', '-printf', "%f\n"]).splitlines()
         playlist_valid = []
@@ -129,7 +129,13 @@ def home_page():
                 playlist_valid.append(list_x)
     except  CalledProcessError as playlist_error:
         print playlist_error
-    return render_template("index.html", playlist_all=playlist_valid, rtmp_list=RTMP_LIST)
+    return render_template("stream.html", playlist_all=playlist_valid, rtmp_list=RTMP_LIST)
+
+@MAIN_APP.route('/')
+@requires_auth
+def home_page():
+    '''Home Page'''
+    return render_template("index.html")    
 
 
 if __name__ == '__main__':

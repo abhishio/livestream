@@ -1,113 +1,32 @@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: black;
-    }
-    
-    * {
-        box-sizing: border-box;
-    }
-    
-    /* Add padding to containers */
-    .container {
-        padding: 16px;
-        background-color: white;
-    }
-    
-    /* Full-width input fields */
-    input[type=text], input[type=password] {
-        width: 100%;
-        padding: 15px;
-        margin: 5px 0 22px 0;
-        display: inline-block;
-        border: none;
-        background: #f1f1f1;
-    }
-    
-    input[type=text]:focus, input[type=password]:focus {
-        background-color: #ddd;
-        outline: none;
-    }
-    
-    /* Overwrite default styles of hr */
-    hr {
-        border: 1px solid #f1f1f1;
-        margin-bottom: 25px;
-    }
-    
-    /* Set a style for the submit button */
-    .startstreambtn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 16px 20px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        opacity: 0.9;
-    }
-    
-    .startstreambtn:hover {
-        opacity: 1;
-    }
-    
-    /* Add a blue text color to links */
-    a {
-        color: dodgerblue;
-    }
-    
-    /* Set a grey background color and center the text of the "sign in" section */
-    .signin {
-        background-color: #f1f1f1;
-        text-align: center;
-    }
-    </style>
-</head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<body>
+    <title>EasyStream</title>
 
-    <form action = "/stream/start" method = "POST">
-      <div class="container">
-        
-        <h1>Streaming Details</h1>
-        <p > OwnCloud User : <b>OTTS</b> </p>
-         
-        <hr>
-    
-        <div>
-        <label for="yt_rtmp"><b>RTMP URL</b></label>
-            <!-- <input type="text" placeholder="rtmp://a.rtmp.youtube.com/live2 | rtmp://live-api-s.facebook.com:80/rtmp/" name="yt_rtmp" > -->
-            <Select name = "yt_rtmp">
-                {% for key in rtmp_list %}
-                <option value = "{{ key }}" selected> {{  key }} </option>
-                {% endfor %}  
-            </Select>
-        </div>
-        <h3></h3>
-        <div>
-            <label for="yt_streamkey"><b>Youtube StreamKey</b></label>
-            <input type="text" placeholder="Enter StreamKey" name="yt_streamkey" required>
-        </div>    
-        <div>
-            <label for="playlist"><b>Select Uploaded Playlist ** </b></label>
-            <Select name = "select_playlist">
-                {% for key in playlist_all %}
-                <option value = "{{ key }}" selected> {{  key }} </option>
-                {% endfor %}  
-            </Select>
-        </div>
-        <p> ** Only Playlist with videos are available in the list</p>
-        <hr>
-         
-        <button type="submit" class="startstreambtn">Start Streaming</button>
-      </div>
-      
-    </form>    
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.0/examples/floating-labels/floating-labels.css" rel="stylesheet">
+  </head>
 
-      
-   </body>
+  <body>
+    <div align="center">
+        <form action="/stream" class="form-signin">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Create Stream</button>
+        </form>
+        <form action="/stream/status" class="form-signin">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Stream Status</button>
+        </form>
+        <form action="/stream/at" class="form-signin">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Schedule Stream</button>
+        </form>
+        <form action="//upload.easystream.net" class="form-signin">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Upload Videos</button>
+        </form>
+    </div> 
+</body>
 </html>
