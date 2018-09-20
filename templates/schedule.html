@@ -88,9 +88,6 @@
                     <a class="nav-link" href="/stream/status">Stream Status</a>
                   </li>
                   <li class="nav-item active">
-                    <a class="nav-link" href="/stream/schedule">Schedule Stream</a>
-                  </li>
-                  <li class="nav-item active">
                     <a class="nav-link" href="/upload">Upload Videos</a>
                   </li>
                   
@@ -98,7 +95,7 @@
         </nav>
     <div></div>
 
-    <form action = "/stream/start" method = "POST">
+    <form action = "/stream/schedule/at" method = "POST">
       <div class="container">
         <div align="center">
             <h1>Streaming Details</h1>
@@ -112,9 +109,10 @@
             </div>
             <div class="col-6">
                 <Select name = "yt_rtmp">
-                        {% for key in rtmp_list %}
+                        <option value = "{{ rtmp_list[0] }}" selected> {{ rtmp_list[0] }} </option>
+                        <!-- {% for key in rtmp_list %}
                         <option value = "{{ key }}" selected> {{  key }} </option>
-                        {% endfor %}  
+                        {% endfor %}   -->
                 </Select>
             </div>
         </div>
@@ -130,7 +128,7 @@
 
         <div class="row">
             <div class="col-4">
-                <label for="playlist"><b>Select Uploaded Playlist ** </b></label>
+                <label for="playlist"><b>Select Uploaded Playlist * </b></label>
                 
             </div>
             <div class="col-4">
@@ -142,9 +140,20 @@
             </div>
         </div>
 
+        <div class="row">
+                <div class="col-4">
+                    <label for="schedule_date"><b>Schedule Date</b></label>
+                </div>
+                <div class="col-6">
+                    <input type="time" name="schedule_time" required>
+                    <input type="date" name="schedule_date" required>
+                    <label for="schedule_time">Server Time** : <b>{{ server_time }} </b></label>
+                </div>
+            </div>
+
         <p> ** Only Playlist with videos are available in the list</p>
-         
-        <button type="submit" class="startstreambtn">Start Streaming</button>
+        <p> ** Server Time is in 24hr Format hh:mm MM/DD/YY</p>
+        <button type="submit" class="startstreambtn">Schedule Stream</button>
       </div>
       
     </form> 

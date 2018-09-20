@@ -44,6 +44,9 @@
                 <a class="nav-link" href="/stream">Create Stream</a>
                 </li>
                 <li class="nav-item active">
+                    <a class="nav-link" href="/stream/schedule">Schedule Stream</a>
+                </li>
+                <li class="nav-item active">
                 <a class="nav-link" href="/upload">Upload Videos</a>
                 </li>
             </ul>
@@ -101,6 +104,28 @@
                     {% endfor %}
             </table>
         </div>
+        <div class="row">
+            <h3> Schedule List </h3>
+            <table style = "width:100%">
+                    <tr>
+                        <th>JobID</th>
+                        <th>Time</th>
+                        <th>Stream info</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for item in schedule_list %}
+                    <tr>
+                        <form action = "/stream/schedule/stop" method = "POST">
+                            <td> <input type="hidden" value="{{ item[0] }}" name = "pid" readonly> {{ item[0] }} </td>
+                            <td> {{ item[1:6] }} </td>
+                            <td> {{ item[-1] }} </td>
+                            <td> <button type = "submit" class="btn btn-danger" > stop </button> </td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+            </table>
+         </div>
+    
     </div> 
 </body>
 </html>
