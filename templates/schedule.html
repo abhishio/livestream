@@ -84,6 +84,9 @@
                   <li class="nav-item active">
                     <a class="nav-link" href="/">Home</a>
                   </li>
+	        <li class="nav-item active">
+	                <a class="nav-link" href="/stream">Create Stream</a>
+                </li>
                   <li class="nav-item active">
                     <a class="nav-link" href="/stream/status">Stream Status</a>
                   </li>
@@ -109,10 +112,10 @@
             </div>
             <div class="col-6">
                 <Select name = "yt_rtmp">
-                        <option value = "{{ rtmp_list[0] }}" selected> {{ rtmp_list[0] }} </option>
-                        <!-- {% for key in rtmp_list %}
-                        <option value = "{{ key }}" selected> {{  key }} </option>
-                        {% endfor %}   -->
+                       <!-- <option value = "{{ rtmp_list[0] }}" selected> {{ rtmp_list[0] }} </option> -->
+                        {% for key in rtmp_list %}
+                        	<option value = "{{ key }}" selected> {{  key }} </option>
+                        {% endfor %} 
                 </Select>
             </div>
         </div>
@@ -152,7 +155,7 @@
             </div>
 
         <p> ** Only Playlist with videos are available in the list</p>
-        <p> ** Server Time is in 24hr Format hh:mm MM/DD/YY</p>
+        <p> ** Server Time is in 24hr Format</p>
         <button type="submit" class="startstreambtn">Schedule Stream</button>
       </div>
       
