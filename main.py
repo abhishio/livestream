@@ -3,8 +3,7 @@ from functools import wraps
 from random import choice
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT, check_output
 from string import ascii_lowercase, digits
-from datetime import datetime as time
-from getpass import getuser
+from platform import linux_distribution as which_dist
 from flask import Flask, request, Response, render_template, redirect
 
 
@@ -88,13 +87,18 @@ def stop_process(pid):
     return ps_out.communicate()[0].splitlines()
 
 def get_schedule():
+    at_index = -3
+    if 'Ubuntu' in which_dist():
+        at_index = -2
+        print(which_dist())
     temp_job_list = check_output('atq').splitlines()
     index_x = 0
     job_list = []
     for temp_x in temp_job_list:
         job_list.append(temp_x.split())
-        job_list[index_x].append(check_output(['at', '-c', temp_x.split()[0]]).splitlines()[-2])
+        job_list[index_x].append(check_output(['at', '-c', temp_x.split()[0]]).splitlines()[at_index])
         index_x += 1
+    
     return job_list
 
 def stop_schedule(pid):
@@ -182,7 +186,7 @@ def schedule_page():
                 playlist_valid.append(list_x)
     except  CalledProcessError as playlist_error:
         print playlist_error
-    server_time = time.now().strftime("%H:%M %m/%d/%Y")
+    server_time = check_output(['date'])
     return render_template("schedule.html", playlist_all=playlist_valid, rtmp_list=RTMP_LIST, server_time=server_time)
 
 

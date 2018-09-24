@@ -49,7 +49,7 @@ fi
 
 stream_media() {
     self_media_path="$1"
-    ffmpeg  -re -i $self_media_path -pix_fmt yuv420p -deinterlace  -vsync 1 -threads 2 -vcodec copy -r 30 -g 60 -sc_threshold 0 -b:v 3000k -bufsize 14600k -maxrate 4600k -preset slow -tune zerolatency -acodec copy -b:a 128k -ac 2 -ar 48000  -f flv $STREAM_URL > $logfile 2>&1
+    ffmpeg  -re -i $self_media_path -pix_fmt yuv420p -deinterlace  -vsync 1 -threads 2 -vcodec copy -r 30 -g 60 -sc_threshold 0 -b:v 3000k -bufsize 14600k -maxrate 4600k -preset slow -tune zerolatency -acodec copy -b:a 128k -ac 2 -ar 48000  -f flv $STREAM_URL >> $logfile 2>&1
     
 }
 
