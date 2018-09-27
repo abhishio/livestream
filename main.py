@@ -3,7 +3,6 @@ from functools import wraps
 from random import choice
 from subprocess import Popen, CalledProcessError, PIPE, STDOUT, check_output
 from string import ascii_lowercase, digits
-from datetime import datetime as time
 from getpass import getuser
 from flask import Flask, request, Response, render_template, redirect
 
@@ -93,7 +92,7 @@ def get_schedule():
     job_list = []
     for temp_x in temp_job_list:
         job_list.append(temp_x.split())
-        job_list[index_x].append(check_output(['at', '-c', temp_x.split()[0]]).splitlines()[-2])
+        job_list[index_x].append(check_output(['at', '-c', temp_x.split()[0]]).splitlines()[-3])
         index_x += 1
     return job_list
 
@@ -182,7 +181,7 @@ def schedule_page():
                 playlist_valid.append(list_x)
     except  CalledProcessError as playlist_error:
         print playlist_error
-    server_time = time.now().strftime("%H:%M %m/%d/%Y")
+    server_time = check_output(['date'])
     return render_template("schedule.html", playlist_all=playlist_valid, rtmp_list=RTMP_LIST, server_time=server_time)
 
 
