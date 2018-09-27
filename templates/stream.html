@@ -111,11 +111,12 @@
                 <label for="yt_rtmp"><b>RTMP URL</b></label>
             </div>
             <div class="col-6">
-                <Select name = "yt_rtmp">
+                <input type="text" list="rtmplist" placeholder="Enter RTMP URL" name="yt_rtmp" required>
+                <datalist id="rtmplist">
                         {% for key in rtmp_list %}
                         <option value = "{{ key }}" selected> {{  key }} </option>
                         {% endfor %}  
-                </Select>
+                </datalist>
             </div>
         </div>
         <div class="row">
